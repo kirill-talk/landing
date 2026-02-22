@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@theme {
+    --color-cyber-darker: #020203;
+    --color-cyber-dark: #050505;
+    --color-cyber-cyan: #00f2ff;
+    --color-cyber-purple: #7000ff;
+    --color-cyber-pink: #ff00c8;
+    --color-cyber-card: rgba(10, 10, 12, 0.8);
+
+    --background-image-cyber-gradient: linear-gradient(135deg, #00f2ff 0%, #7000ff 100%);
+    --background-image-mesh-gradient: radial-gradient(at 0% 0%, hsla(253, 16%, 7%, 1) 0, transparent 50%),
+        radial-gradient(at 50% 0%, hsla(225, 39%, 30%, 1) 0, transparent 50%),
+        radial-gradient(at 100% 0%, hsla(339, 49%, 30%, 1) 0, transparent 50%);
+
+    --shadow-glow: 0 0 30px rgba(0, 242, 255, 0.3);
+    --shadow-glow-hover: 0 0 60px rgba(0, 242, 255, 0.5);
+
+    --animate-float: float 8s ease-in-out infinite;
+    --animate-pulse-slow: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+
+    @keyframes float {
+
+        0%,
+        100% {
+            transform: translateY(0px) rotate(0deg);
+        }
+
+        33% {
+            transform: translateY(-30px) rotate(2deg);
+        }
+
+        66% {
+            transform: translateY(-10px) rotate(-1deg);
+        }
+    }
+}
+
+@layer base {
+    body {
+        @apply bg-cyber-darker text-white font-sans antialiased overflow-x-hidden m-0 p-0;
+    }
+}
+
+@layer components {
+    .glass-premium {
+        @apply bg-cyber-card backdrop-blur-3xl border border-white/5 shadow-2xl;
+    }
+
+    .glow-btn-premium {
+        @apply bg-cyber-gradient text-white px-10 py-4 rounded-full font-black uppercase tracking-widest shadow-glow transition-all duration-500 hover:-translate-y-1 hover:shadow-glow-hover hover:scale-105 active:scale-95;
+    }
+
+    .shadow-inner-custom {
+        box-shadow: 0 0 15px var(--shadow-color, rgba(255, 255, 255, 0.1));
+    }
+
+    .text-gradient {
+        @apply bg-cyber-gradient bg-clip-text text-transparent;
+    }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--color-cyber-darker);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--color-cyber-cyan);
+    border-radius: 10px;
+}

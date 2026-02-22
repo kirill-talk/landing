@@ -1,0 +1,51 @@
+{
+  "hero": {
+    "badge": "New Generation Platform",
+    "title": "Next-Level Crypto Analytics.",
+    "subtitle": "Experience the first edge-to-edge immersive dashboard. Real-time data, AI-driven insights, and world-class design for the modern trader.",
+    "primaryCTA": "Start Trading Now",
+    "secondaryCTA": "See the Demo"
+  },
+  "stats": [
+    {
+      "label": "24h Volume",
+      "value": "$4.2B",
+      "change": "+12.5%"
+    },
+    {
+      "label": "Active Nodes",
+      "value": "18,241",
+      "change": "+240"
+    },
+    {
+      "label": "Total Value Locked",
+      "value": "$12.8B",
+      "change": "+5.2%"
+    },
+    {
+      "label": "Network TPS",
+      "value": "65,000",
+      "change": "Max 120k"
+    }
+  ],
+  "features": [
+    {
+      "title": "Neural Analytics",
+      "desc": "Predictive market movements using deep learning models integrated directly into your dashboard.",
+      "icon": "🧠",
+      "color": "aether-blue"
+    },
+    {
+      "title": "Quantum Execution",
+      "desc": "Execute trades with sub-millisecond latency on our proprietary layer-2 architecture.",
+      "icon": "⚡",
+      "color": "aether-teal"
+    },
+    {
+      "title": "Universal Wallet",
+      "desc": "Connect every chain, every asset, and every protocol through one singular glass interface.",
+      "icon": "🌐",
+      "color": "aether-violet"
+    }
+  ]
+}
