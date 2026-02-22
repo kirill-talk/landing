@@ -38,27 +38,74 @@
 
   async function handleSave() {
     saving = true;
-    console.log("Publishing changes to disk:", content);
+    console.log("Publishing changes...", content);
 
     try {
-      // 1. Save to disk via Vite API
-      const resp = await fetch("/api/save-content", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(content),
-      });
+      if (import.meta.env.DEV) {
+        // 1. Save to disk via Vite API (Local Dev)
+        const resp = await fetch("/api/save-content", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(content),
+        });
 
-      if (!resp.ok) throw new Error("Server save failed");
+        if (!resp.ok) throw new Error("Server save failed");
+        alert("Changes published directly to local content.json!");
+      } else {
+        // 2. Save via GitHub API (Production on GitHub Pages)
+        const token = prompt(
+          "You are in production mode. To save changes to GitHub, enter your GitHub Personal Access Token (with repo scope):",
+        );
+        if (!token) {
+          saving = false;
+          return;
+        }
 
-      // 2. Save to localStorage for redundancy
+        const repo = "kirill-talk/landing";
+        const path = "public/content.json";
+
+        // Step A: Get current file SHA
+        const getResp = await fetch(
+          `https://api.github.com/repos/${repo}/contents/${path}`,
+        );
+        if (!getResp.ok)
+          throw new Error("Failed to fetch current file info from GitHub");
+        const fileInfo = await getResp.json();
+
+        // Step B: Update file
+        const putResp = await fetch(
+          `https://api.github.com/repos/${repo}/contents/${path}`,
+          {
+            method: "PUT",
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              message: "Content update via Visual Editor",
+              content: btoa(
+                unescape(encodeURIComponent(JSON.stringify(content, null, 2))),
+              ),
+              sha: fileInfo.sha,
+            }),
+          },
+        );
+
+        if (!putResp.ok) {
+          const err = await putResp.json();
+          throw new Error("GitHub API save failed: " + err.message);
+        }
+
+        alert(
+          "Changes published directly to GitHub repo! A new build will deploy shortly.",
+        );
+      }
+
+      // 3. Save to localStorage for redundancy
       localStorage.setItem("aether_content", JSON.stringify(content));
-
-      alert(
-        "Changes published directly to content.json! Page will now stay updated on refresh.",
-      );
-    } catch (e) {
+    } catch (e: any) {
       console.error("Persistence failed", e);
-      alert("Failed to save to disk. Changes kept in browser session.");
+      alert(`Failed to save: ${e.message}\nChanges kept in browser session.`);
     } finally {
       saving = false;
     }
