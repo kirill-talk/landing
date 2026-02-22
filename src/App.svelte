@@ -28,7 +28,7 @@
 
     if (!content) {
       try {
-        const resp = await fetch("/content.json");
+        const resp = await fetch(import.meta.env.BASE_URL + "content.json");
         if (resp.ok) content = await resp.json();
       } catch (e) {
         console.error("Content fetch failed", e);
