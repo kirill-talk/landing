@@ -53,12 +53,17 @@
         alert("Changes published directly to local content.json!");
       } else {
         // 2. Save via GitHub API (Production on GitHub Pages)
-        const token = prompt(
-          "You are in production mode. To save changes to GitHub, enter your GitHub Personal Access Token (with repo scope):",
-        );
+        let token = localStorage.getItem("github_pat");
+
         if (!token) {
-          saving = false;
-          return;
+          token = prompt(
+            "First time setup: To enable automatic saving to GitHub, enter your GitHub Personal Access Token (with repo scope):",
+          );
+          if (!token) {
+            saving = false;
+            return;
+          }
+          localStorage.setItem("github_pat", token);
         }
 
         const repo = "kirill-talk/landing";
@@ -93,6 +98,13 @@
 
         if (!putResp.ok) {
           const err = await putResp.json();
+          // If token is invalid, clear it so they get prompted again next time
+          if (putResp.status === 401 || putResp.status === 403) {
+            localStorage.removeItem("github_pat");
+            throw new Error(
+              "GitHub token expired or invalid. Please try publishing again to enter a new one.",
+            );
+          }
           throw new Error("GitHub API save failed: " + err.message);
         }
 
