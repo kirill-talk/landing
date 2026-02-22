@@ -37,5 +37,6 @@ const contentSavePlugin = () => ({
 
 // https://vite.dev/config/
 export default defineConfig({
+  base: '/landing/',
   plugins: [svelte(), contentSavePlugin()],
 })
